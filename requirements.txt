@@ -4,3 +4,4 @@ south
 werkzeug
 modestmaps
 gunicorn
+eventlet
