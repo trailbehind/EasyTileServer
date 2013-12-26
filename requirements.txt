@@ -3,4 +3,4 @@ djangorestframework
 south
 werkzeug
 modestmaps
-
+gunicorn
