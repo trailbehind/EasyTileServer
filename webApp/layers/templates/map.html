@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+  <title>Preview: {{ layer.name }}</title>
+ <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
+ <!--[if lte IE 8]>
+     <link rel="stylesheet" href="/static/leaflet/leaflet.ie.css" />
+ <![endif]-->
+
+<style type="text/css">
+#map {
+  width: 100%;
+  height: 99%;
+}
+</style>
+</head>
+<body style="height: 100%;">
+    <div id="map"></div>
+  <script src="/static/leaflet/leaflet.js"></script>
+<script type="text/javascript">
+	var map = L.map('map').setView([{{ layer.center.y }}, {{ layer.center.x }}], {{ layer.previewZoom }});
+	map.minZoom = {{ layer.minzoom }};
+	map.maxZoom = {{ layer.maxzoom }};
+  
+	L.tileLayer('/tiles/{{ layer.layerName }}/{z}/{x}/{y}.{{ layer.format }}', {
+    attribution: '{{ layer.attribution }}',
+    maxZoom: {{ layer.maxzoom }}
+}).addTo(map);  
+  </script>
+</body>
+</html>
