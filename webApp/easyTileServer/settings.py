@@ -102,7 +102,7 @@ TILESTACHE_CACHE = {"name":"Disk", "path":"/tmp/tilecache/", "umask":"0000"}
 LOG_DIR = os.path.join(os.path.dirname(PARENT_DIR), 'logs')
 
 try:
-    from easyTileServer.local_settings.py import *
+    from easyTileServer.local_settings import *
 except:
     pass
 
