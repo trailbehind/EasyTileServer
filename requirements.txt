@@ -1,4 +1,4 @@
-django
+django==1.5.5
 djangorestframework
 south
 werkzeug
