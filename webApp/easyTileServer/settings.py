@@ -81,8 +81,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'django.contrib.admin',
+    'gunicorn',
     'rest_framework',
-    'layers'
+    'layers',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
