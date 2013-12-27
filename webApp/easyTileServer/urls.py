@@ -27,4 +27,5 @@ urlpatterns = patterns('',
     url(r'^upload/', login_required(views.UploadFileView.as_view(success_url="/layeradmin/"))),
 
     url(r'^tiles/(?P<layer_name>[^/]+)/(?P<z>[^/]+)/(?P<x>[^/]+)/(?P<y>[^/]+)\.(?P<extension>.+)$', 'layers.views.tiles', name='tiles_url'),
+    url(r'^(?P<layer_name>[^/]+)/(?P<z>[^/]+)/(?P<x>[^/]+)/(?P<y>[^/]+)\.(?P<extension>.+)$', 'layers.views.tiles', name='tiles_url'),
 )
