@@ -38,7 +38,7 @@ class Layer(models.Model):
     objects = models.GeoManager()
 
     def getTileUrl(self):
-        return "%s/tiles/%s/{z}/{x}/{y}.%s" % ("http://localhost", self.layerName, self.format)
+        return "%s/tiles/%s/{z}/{x}/{y}.%s" % (settings.BASE_URL, self.layerName, self.format)
 
     def getTileUrlArray(self):
         urls = []

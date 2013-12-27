@@ -2,6 +2,8 @@
 
 import os
 
+BASE_URL = "http://localhost"
+
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
