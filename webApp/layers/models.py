@@ -12,29 +12,36 @@ class Layer(models.Model):
     Defines a TileStache layer
     """
 
-    #meta data fields
-    attribution = models.TextField(max_length=255, blank=True, null=True)
-    bounds = models.PolygonField(blank=True, null=True)
-    center = models.PointField(blank=True, null=True)
-    description = models.TextField(max_length=255, blank=True, null=True)
-    legend = models.TextField(max_length=5000, blank=True, null=True)
-    maxzoom = models.IntegerField(blank=True, null=True)
-    minzoom = models.IntegerField(blank=True, null=True)
-    name = models.TextField(max_length=255, blank=True, null=True)
-    public = models.BooleanField(default=True)
-    version = models.TextField(default="1.0")
-
     PROVIDER_CHOICES = (
         ('mapnik', 'mapnik'),
         ('mbtiles', 'MBTiles'),
     )
+
+    FORMAT_CHOICES = (
+        ('png', 'png'),
+        ('jpg', 'jpg'),
+        ('json', 'json'),
+    )
+
+    #meta data fields
+    attribution = models.CharField(max_length=255, blank=True, null=True)
+    bounds = models.PolygonField(blank=True, null=True)
+    center = models.PointField(blank=True, null=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
+    legend = models.TextField(max_length=5000, blank=True, null=True)
+    maxzoom = models.IntegerField(blank=True, null=True)
+    minzoom = models.IntegerField(blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    public = models.BooleanField(default=True)
+    version = models.CharField(default="1.0", max_length=20)
     
     #tileStache config
-    layerName = models.TextField(max_length=50, unique=True)
-    provider = models.TextField(max_length=100, choices=PROVIDER_CHOICES, default='mbtiles')
+    layerName = models.CharField(max_length=50, unique=True)
+    provider = models.CharField(max_length=100, choices=PROVIDER_CHOICES, default='mbtiles')
     uploadedFile = models.FileField(blank=True, null=True, upload_to=settings.UPLOAD_DIR)
-    localFile = models.TextField(max_length=500, blank=True, null=True)
-    format = models.TextField(max_length=20, default="png")
+    localFile = models.CharField(max_length=500, blank=True, null=True)
+    format = models.CharField(max_length=20, choices=FORMAT_CHOICES, default="png")
+
     objects = models.GeoManager()
 
     def getTileUrl(self):
