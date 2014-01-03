@@ -14,7 +14,10 @@ class NoAnonymousCookiesMiddleware(SessionMiddleware):
         Delete all cookies for anonymous users
         """
         response = super(NoAnonymousCookiesMiddleware, self).process_response(request, response)
-        if not request.user.is_authenticated():
-            response.cookies.clear()
-
+        try :
+            if not request.user.is_authenticated():
+                response.cookies.clear()
+        except:
+            pass
+            
         return response
