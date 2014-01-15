@@ -97,4 +97,7 @@ class Layer(models.Model):
         self.maxzoom = int(maxzoom)
 
         con.close()
-            
+
+    def previewUrl(self, request):
+        return request.build_absolute_uri("/preview/%s/" % self.layerName)
+    
