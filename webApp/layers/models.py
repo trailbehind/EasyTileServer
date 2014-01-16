@@ -15,12 +15,18 @@ class Layer(models.Model):
     PROVIDER_CHOICES = (
         ('mapnik', 'mapnik'),
         ('mbtiles', 'MBTiles'),
+        ('url template', 'URL template'), 
     )
 
     FORMAT_CHOICES = (
         ('png', 'png'),
         ('jpg', 'jpg'),
         ('json', 'json'),
+    )
+
+    PROJECTION_CHOICES = (
+        ('spherical mercator', 'spherical mercator'),
+        ('WGS84', 'WGS84'),
     )
 
     #meta data fields
@@ -41,6 +47,12 @@ class Layer(models.Model):
     uploadedFile = models.FileField(blank=True, null=True, upload_to=settings.UPLOAD_DIR)
     localFile = models.CharField(max_length=500, blank=True, null=True)
     format = models.CharField(max_length=20, choices=FORMAT_CHOICES, default="png")
+    template = models.URLField(blank=True, max_length=1000, verbose_name="URL for Template provider")
+    projection = models.CharField(max_length=20, default='spherical mercator', choices=PROJECTION_CHOICES)
+    metatileRows = models.IntegerField(default=1)
+    metatileColumns = models.IntegerField(default=1)
+    metatileBuffer = models.IntegerField(default=0)
+    referer = models.URLField(blank=True, null=True, max_length=1000, verbose_name="Referer for Template provider queries")
 
     objects = models.GeoManager()
 

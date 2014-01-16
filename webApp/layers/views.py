@@ -61,10 +61,20 @@ def get_config():
     config_dict = get_base_config_dict()
     for layer in Layer.objects.all():
         providerDict = {'name' : layer.provider}
+        providerDict['projection'] = layer.projection
+
         if layer.provider == "mbtiles":
             providerDict['tileset'] = layer.bestFile()
         elif layer.provider == "mapnik":
             providerDict['mapfile'] = layer.bestFile()
+        elif layer.provider == "url template":
+            providerDict['template'] = layer.template
+            if layer.referer is not None:
+                providerDict['referer'] = layer.referer
+
+        providerDict['metatile'] = {"rows" : layer.metatileRows,
+         "columns" : layer.metatileColumns,
+         "buffer" : layer.metatileBuffer }
         config_dict['layers'][layer.layerName] = {'provider' : providerDict}
 
     return TileStache.Config.buildConfiguration(config_dict)
