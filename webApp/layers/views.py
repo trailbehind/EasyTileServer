@@ -72,10 +72,10 @@ def get_config():
             if layer.referer is not None:
                 providerDict['referer'] = layer.referer
 
-        providerDict['metatile'] = {"rows" : layer.metatileRows,
+        metatile = {"rows" : layer.metatileRows,
          "columns" : layer.metatileColumns,
          "buffer" : layer.metatileBuffer }
-        config_dict['layers'][layer.layerName] = {'provider' : providerDict}
+        config_dict['layers'][layer.layerName] = {'provider' : providerDict, 'metatile' : metatile}
 
     return TileStache.Config.buildConfiguration(config_dict)
 
