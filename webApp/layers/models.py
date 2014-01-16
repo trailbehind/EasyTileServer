@@ -49,6 +49,7 @@ class Layer(models.Model):
     format = models.CharField(max_length=20, choices=FORMAT_CHOICES, default="png")
     template = models.URLField(blank=True, max_length=1000, verbose_name="URL for Template provider")
     projection = models.CharField(max_length=20, default='spherical mercator', choices=PROJECTION_CHOICES)
+    sourceProjection = models.CharField(max_length=20, blank=True, null=True, choices=PROJECTION_CHOICES)
     metatileRows = models.IntegerField(default=1)
     metatileColumns = models.IntegerField(default=1)
     metatileBuffer = models.IntegerField(default=0)

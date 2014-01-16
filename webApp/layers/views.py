@@ -71,6 +71,8 @@ def get_config():
             providerDict['template'] = layer.template
             if layer.referer is not None:
                 providerDict['referer'] = layer.referer
+            if layer.sourceProjection is not None:
+                providerDict['source projection'] = layer.sourceProjection
 
         metatile = {"rows" : layer.metatileRows,
          "columns" : layer.metatileColumns,
