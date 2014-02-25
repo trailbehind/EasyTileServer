@@ -57,25 +57,25 @@ class Layer(models.Model):
 
     objects = models.GeoManager()
 
-    def getTileUrl(self):
+    def get_tile_url(self):
         return "%s/tiles/%s/{z}/{x}/{y}.%s" % (settings.BASE_URL, self.layerName, self.format)
 
-    def getTileUrlArray(self):
+    def get_tile_url_array(self):
         urls = []
-        urls.append(self.getTileUrl())
+        urls.append(self.get_tile_url())
         return urls
 
-    def previewZoom(self):
+    def preview_zoom(self):
         return self.minzoom + ((self.maxzoom - self.minzoom) /2)
 
-    def bestFile(self):
+    def best_file(self):
         if self.localFile is not None and len(self.localFile) > 0:
             return self.localFile
         return self.uploadedFile.path
 
-    def loadMetaDataFromMBTiles(self):
+    def load_metadata_from_mbtiles(self):
         try:
-            path = self.bestFile()
+            path = self.best_file()
             logging.debug("getting metadata from " + path)
             con = sqlite3.connect(path)
         except Exception, e:
@@ -111,6 +111,6 @@ class Layer(models.Model):
 
         con.close()
 
-    def previewUrl(self, request):
+    def preview_url(self, request):
         return request.build_absolute_uri("/preview/%s/" % self.layerName)
     

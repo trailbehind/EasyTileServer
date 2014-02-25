@@ -10,7 +10,7 @@ from django.conf import settings
 
 import logging
 
-from layers.serializers import TileDirectorySerializer, TileJsonSerializer
+from layers.serializers import LayerAdminSerializer, TileJsonSerializer
 from layers.models import *
 import TileStache
 
@@ -29,7 +29,7 @@ class LayerAdmin(viewsets.ModelViewSet):
     API endpoint for administration of layers.
     """
     queryset = Layer.objects.all()
-    serializer_class = TileDirectorySerializer
+    serializer_class = LayerAdminSerializer
     permission_classes = (IsAuthenticated,)
 
 
@@ -102,28 +102,6 @@ class LayerPreviewView(TemplateView):
         context = super(LayerPreviewView, self).get_context_data(**kwargs)
         context['layer'] = get_object_or_404(Layer, layerName=kwargs['layer_name'])
         return context
-
-
-class UploadFileView(CreateView):
-    """
-    A form view with to upload a file and create a new layer.
-    """
-    model = Layer
-    fields = ['name', 'attribution', 'description', 'layerName', 'provider', 'public',
-         'localFile', 'uploadedFile']
-    template_name = "layer_upload_form.html"
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        obj = form.save(commit=False)
-        obj.save()
-        if obj.provider == "mbtiles":
-            try:
-                obj.loadMetaDataFromMBTiles()
-                obj.save()
-            except Exception, e:
-                logging.error("Error getting metadata from upload " + str(e))
-        return super(UploadFileView, self).form_valid(form)
 
 
 class IndexView(TemplateView):
