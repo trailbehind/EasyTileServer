@@ -64,9 +64,9 @@ def get_config():
         providerDict['projection'] = layer.projection
 
         if layer.provider == "mbtiles":
-            providerDict['tileset'] = layer.bestFile()
+            providerDict['tileset'] = layer.best_file()
         elif layer.provider == "mapnik":
-            providerDict['mapfile'] = layer.bestFile()
+            providerDict['mapfile'] = layer.best_file()
         elif layer.provider == "url template":
             providerDict['template'] = layer.template
             if layer.referer is not None:
