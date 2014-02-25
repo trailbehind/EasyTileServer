@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html style="height: 100%;">
 <head>
-  <title>Nothing to see here.</title>
+  <title>Tile Server</title>
 
 </head>
 <body style="height: 100%;">
-Nothing to see here. Yet.
+<table>
+{% for layer in layers %}
+<tr>
+<td>{{ layer.name }}</td>
+<td><a href="/preview/{{ layer.layerName }}/">Preview</a></td>
+<td><a href="/layers/{{ layer.layerName }}.json">TileJSON</a></td>
+{% if user.is_authenticated %}
+<td><a href="/layeradmin/{{ layer.id }}">Edit</a></td>
+{% endif %}
+</tr>
+{% endfor %}
+</table>
 </body>
 </html>
