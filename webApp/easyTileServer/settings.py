@@ -73,6 +73,7 @@ ROOT_URLCONF = 'easyTileServer.urls'
 WSGI_APPLICATION = 'easyTileServer.wsgi.application'
 
 TEMPLATE_DIRS = (
+    'templates'
 )
 
 INSTALLED_APPS = (
