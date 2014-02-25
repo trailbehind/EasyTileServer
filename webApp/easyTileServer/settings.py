@@ -149,14 +149,6 @@ LOGGING = {
             'backupCount': 5,
             'formatter':'no_name',
         },
-        'authenticate': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOG_DIR, 'django_auth.log'),
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 5,
-            'formatter':'no_name',
-        },
         'mail_admins': {
             'level':'ERROR',
             'class':'django.utils.log.AdminEmailHandler',
@@ -184,11 +176,6 @@ LOGGING = {
         },
         'django.db.backends': {
             'handlers': ['database', 'mail_admins', 'error_log'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'remoteAuthentication': {
-            'handlers': ['authenticate', 'mail_admins', 'error_log'],
             'level': 'DEBUG',
             'propagate': False,
         },
