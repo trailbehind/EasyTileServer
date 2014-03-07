@@ -5,3 +5,4 @@ werkzeug
 modestmaps
 gunicorn
 eventlet
+psycopg2
