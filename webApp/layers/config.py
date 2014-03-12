@@ -1,6 +1,9 @@
 from layers.models import *
 import TileStache
 
+import logging
+import json
+
 
 def get_config():
     """
@@ -32,6 +35,7 @@ def get_config():
          "buffer" : layer.metatileBuffer }
         config_dict['layers'][layer.layerName] = {'provider' : providerDict, 'metatile' : metatile}
         config_dict['allowed origin'] = layer.allowed_origin
+    #logging.debug(json.dumps(config_dict))
 
     return TileStache.Config.buildConfiguration(config_dict)
 

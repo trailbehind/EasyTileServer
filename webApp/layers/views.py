@@ -53,8 +53,9 @@ def tiles(request, layer_name, z, x, y, extension):
     if len(content) == 0:
         status_code = 404
 
-    return HttpResponse(content, mimetype=mimetype, status=status_code)
-
+    response = HttpResponse(content, mimetype=mimetype, status=status_code)
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
 
 class LayerPreviewView(TemplateView):
     """
