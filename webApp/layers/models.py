@@ -4,6 +4,8 @@ from django.contrib.gis.geos import Polygon
 from django.contrib.gis.geos.point import Point
 from django.conf import settings
 
+import jsonfield
+
 import logging
 import sqlite3
 
@@ -13,9 +15,10 @@ class Layer(models.Model):
     """
 
     PROVIDER_CHOICES = (
-        ('mapnik', 'mapnik'),
+        ('mapnik', 'Mapnik'),
         ('mbtiles', 'MBTiles'),
-        ('url template', 'URL template'), 
+        ('url template', 'URL template'),
+        ('vector', 'Vector'),
     )
 
     FORMAT_CHOICES = (
@@ -27,6 +30,12 @@ class Layer(models.Model):
     PROJECTION_CHOICES = (
         ('spherical mercator', 'spherical mercator'),
         ('WGS84', 'WGS84'),
+    )
+
+    DRIVER_CHOICES = (
+        ('ESRI Shapefile', 'ESRI Shapefile'),
+        ('PostgreSQL', 'PostgreSQL'),
+        ('GeoJSON', 'GeoJSON'),
     )
 
     #meta data fields
@@ -53,7 +62,12 @@ class Layer(models.Model):
     metatileRows = models.IntegerField(default=1)
     metatileColumns = models.IntegerField(default=1)
     metatileBuffer = models.IntegerField(default=0)
-    referer = models.URLField(blank=True, null=True, max_length=1000, verbose_name="Referer for Template provider queries")
+    referer = models.URLField(blank=True, null=True, max_length=1000,
+        verbose_name="Referer for Template provider queries")
+    parameters = jsonfield.JSONField(blank=True, null=True, 
+        verbose_name="Json parameters block for vector provider")
+    driver = models.CharField(blank=True, null=True, max_length=30, choices=DRIVER_CHOICES,
+        verbose_name="Driver for vector provider")
 
     objects = models.GeoManager()
 
