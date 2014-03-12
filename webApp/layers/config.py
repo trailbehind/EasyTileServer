@@ -26,11 +26,12 @@ def get_config():
             providerDict['parameters'] = layer.parameters
         if layer.driver is not None:
             providerDict['driver'] = layer.driver
-        
+
         metatile = {"rows" : layer.metatileRows,
          "columns" : layer.metatileColumns,
          "buffer" : layer.metatileBuffer }
         config_dict['layers'][layer.layerName] = {'provider' : providerDict, 'metatile' : metatile}
+        config_dict['allowed origin'] = layer.allowed_origin
 
     return TileStache.Config.buildConfiguration(config_dict)
 

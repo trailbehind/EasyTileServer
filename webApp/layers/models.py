@@ -68,7 +68,8 @@ class Layer(models.Model):
         verbose_name="Json parameters block for vector provider")
     driver = models.CharField(blank=True, null=True, max_length=30, choices=DRIVER_CHOICES,
         verbose_name="Driver for vector provider")
-
+    allowed_origin = models.CharField(max_length=200, default="*")
+    
     objects = models.GeoManager()
 
     def get_tile_url(self):
