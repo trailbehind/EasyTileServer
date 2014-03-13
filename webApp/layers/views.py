@@ -1,6 +1,7 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
@@ -48,7 +49,7 @@ def tiles(request, layer_name, z, x, y, extension):
         tilestacheLayer = config.layers[layer_name]
     except:
         return HttpResponseNotFound()
-        
+
     status_code, headers, content = tilestacheLayer.getTileResponse(coord, extension)
     mimetype = headers.get('Content-Type')
     if len(content) == 0:
