@@ -19,6 +19,7 @@ class Layer(models.Model):
         ('mbtiles', 'MBTiles'),
         ('url template', 'URL template'),
         ('vector', 'Vector'),
+        ('other', 'Provider Class'),
     )
 
     FORMAT_CHOICES = (
@@ -38,6 +39,10 @@ class Layer(models.Model):
         ('GeoJSON', 'GeoJSON'),
     )
 
+    CLASS_CHOICES = (
+        ('TileStache.Goodies.VecTiles:Provider', 'Tilestache VecTiles'),
+    )
+
     #meta data fields
     attribution = models.CharField(max_length=255, blank=True, null=True)
     bounds = models.PolygonField(blank=True, null=True)
@@ -52,13 +57,19 @@ class Layer(models.Model):
     
     #tileStache config
     layerName = models.CharField(max_length=50, unique=True)
-    provider = models.CharField(max_length=100, choices=PROVIDER_CHOICES, default='mbtiles')
-    uploadedFile = models.FileField(blank=True, null=True, upload_to=settings.UPLOAD_DIR)
+    provider = models.CharField(max_length=100, choices=PROVIDER_CHOICES, 
+        default='mbtiles')
+    uploadedFile = models.FileField(blank=True, null=True, 
+        upload_to=settings.UPLOAD_DIR)
     localFile = models.CharField(max_length=500, blank=True, null=True)
-    format = models.CharField(max_length=20, choices=FORMAT_CHOICES, default="png")
-    template = models.URLField(blank=True, max_length=1000, verbose_name="URL for Template provider")
-    projection = models.CharField(max_length=20, default='spherical mercator', choices=PROJECTION_CHOICES)
-    sourceProjection = models.CharField(max_length=20, blank=True, null=True, choices=PROJECTION_CHOICES)
+    format = models.CharField(max_length=20, choices=FORMAT_CHOICES, 
+        default="png")
+    template = models.URLField(blank=True, max_length=1000, 
+        verbose_name="URL for Template provider")
+    projection = models.CharField(max_length=20, default='spherical mercator', 
+        choices=PROJECTION_CHOICES)
+    sourceProjection = models.CharField(max_length=20, blank=True, null=True, 
+        choices=PROJECTION_CHOICES)
     metatileRows = models.IntegerField(default=1)
     metatileColumns = models.IntegerField(default=1)
     metatileBuffer = models.IntegerField(default=0)
@@ -66,10 +77,13 @@ class Layer(models.Model):
         verbose_name="Referer for Template provider queries")
     parameters = jsonfield.JSONField(blank=True, null=True, 
         verbose_name="Json parameters block for vector provider")
-    driver = models.CharField(blank=True, null=True, max_length=30, choices=DRIVER_CHOICES,
+    driver = models.CharField(blank=True, null=True, max_length=30, 
+        choices=DRIVER_CHOICES,
         verbose_name="Driver for vector provider")
     allowed_origin = models.CharField(max_length=200, default="*")
-    
+    provider_class = models.CharField(max_length=200, blank=True, null=True, 
+        verbose_name="Class name for other Provider class",
+        choices=CLASS_CHOICES)
     objects = models.GeoManager()
 
     def get_tile_url(self):
@@ -128,4 +142,40 @@ class Layer(models.Model):
 
     def preview_url(self, request):
         return request.build_absolute_uri("/preview/%s/" % self.layerName)
-    
+
+    def get_layer_config(self):
+        providerDict = {}
+        if self.provider == "other":
+            providerDict['class'] = self.provider_class
+            if self.parameters is not None:
+                providerDict['kwargs'] = self.parameters
+        else:
+            providerDict['name'] = self.provider
+
+        providerDict['projection'] = self.projection
+
+        if self.provider == "mbtiles":
+            providerDict['tileset'] = self.best_file()
+        elif self.provider == "mapnik":
+            providerDict['mapfile'] = self.best_file()
+        elif self.provider == "url template":
+            providerDict['template'] = self.template
+            if self.referer is not None:
+                providerDict['referer'] = self.referer
+            if self.sourceProjection is not None:
+                providerDict['source projection'] = self.sourceProjection            
+        elif self.provider == "vector":
+            if self.parameters is not None:
+                providerDict['parameters'] = self.parameters
+            if self.driver is not None:
+                providerDict['driver'] = self.driver
+
+        metatile = {"rows" : self.metatileRows,
+         "columns" : self.metatileColumns,
+         "buffer" : self.metatileBuffer }
+
+        config = {'provider' : providerDict, 'metatile' : metatile}
+        if self.allowed_origin is not None:
+            config['allowed origin'] = self.allowed_origin
+        
+        return config
