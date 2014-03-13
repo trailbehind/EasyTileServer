@@ -27,6 +27,13 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/django_cache'
+    }
+}
+
 UPLOAD_DIR = "uploads/"
 
 LOGIN_URL = "/api-auth/login/"
