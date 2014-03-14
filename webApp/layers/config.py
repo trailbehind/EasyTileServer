@@ -4,6 +4,7 @@ from django.core.cache import cache
 
 import logging
 import json
+from django.conf import settings
 
 CACHE_KEY = "config.json"
 
@@ -23,6 +24,10 @@ def get_config(force=False):
     #logging.debug(json.dumps(config_dict, indent=4, separators=(',', ': ')))
 
     cache.set(CACHE_KEY, json.dumps(config_dict), 60*5)
+    if settings.TILESTACHE_CONFIG_PATH is not None:
+        with open(settings.TILESTACHE_CONFIG_PATH, 'w') as f:
+            f.write(json.dumps(config_dict, indent=4, separators=(',', ': ')))
+
     return TileStache.Config.buildConfiguration(config_dict)
 
 

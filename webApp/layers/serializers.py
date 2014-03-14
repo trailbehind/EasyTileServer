@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from layers.models import Layer
+from layers.config import get_config
 
 import logging
+
 
 class LayerAdminSerializer(serializers.HyperlinkedModelSerializer):
     previewUrl = serializers.SerializerMethodField('get_preview_url')
@@ -22,6 +24,8 @@ class LayerAdminSerializer(serializers.HyperlinkedModelSerializer):
                 instance.save()
             except Exception, e:
                 logging.error("Error getting metadata from upload " + str(e))
+        #regenerate config
+        get_config(force=True)
         return instance
 
 

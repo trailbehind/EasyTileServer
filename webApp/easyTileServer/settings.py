@@ -34,6 +34,8 @@ CACHES = {
     }
 }
 
+TILESTACHE_CONFIG_PATH = "/tmp/config.json"
+
 UPLOAD_DIR = "uploads/"
 
 LOGIN_URL = "/api-auth/login/"
@@ -115,8 +117,8 @@ LOG_DIR = os.path.join(os.path.dirname(PARENT_DIR), 'logs')
 
 try:
     from easyTileServer.local_settings import *
-except:
-    pass
+except Exception, e:
+    print(str(e))
 
 if not os.path.exists(LOG_DIR):
     os.mkdir(LOG_DIR)
