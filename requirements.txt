@@ -7,4 +7,5 @@ gunicorn
 eventlet
 psycopg2
 django-jsonfield
-djcelery
+django-celery
+
