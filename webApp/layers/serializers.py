@@ -17,15 +17,12 @@ class LayerAdminSerializer(serializers.HyperlinkedModelSerializer):
 
     def restore_object(self, attrs, instance=None):
         instance = super(LayerAdminSerializer, self).restore_object(attrs, instance=instance)
-        instance.save()
         if instance.provider == "mbtiles":
             try:
                 instance.load_metadata_from_mbtiles()
-                instance.save()
             except Exception, e:
                 logging.error("Error getting metadata from upload " + str(e))
         #regenerate config
-        #get_config(force=True)
         tasks.generate_config.delay()
         return instance
 
