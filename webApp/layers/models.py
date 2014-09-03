@@ -139,9 +139,13 @@ class Layer(models.Model):
 
         self.format = metadata.get('format', self.format)
         self.version = metadata.get('version', self.version)
-        (minzoom, maxzoom) = con.execute('select min(zoom_level), max(zoom_level) from tiles').fetchone()
-        self.minzoom = int(minzoom)
-        self.maxzoom = int(maxzoom)
+        if 'minzoom' in metadata and 'maxzoom' in metadata:
+            self.minzoom = int(metadata['minzoom'])
+            self.maxzoom = int(metadata['maxzoom'])
+        else:
+            (minzoom, maxzoom) = con.execute('select min(zoom_level), max(zoom_level) from tiles').fetchone()
+            self.minzoom = int(minzoom)
+            self.maxzoom = int(maxzoom)
 
         con.close()
 
