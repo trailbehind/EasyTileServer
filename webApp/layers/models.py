@@ -100,7 +100,12 @@ class Layer(models.Model):
     def best_file(self):
         if self.localFile is not None and len(self.localFile) > 0:
             return self.localFile
-        return self.uploadedFile.path
+        if self.uploadedFile is not None:
+            try:
+                return self.uploadedFile.path
+            except:
+                return None
+        return None
 
     def load_metadata_from_mbtiles(self):
         try:
@@ -140,8 +145,10 @@ class Layer(models.Model):
 
         con.close()
 
+
     def preview_url(self, request):
         return request.build_absolute_uri("/preview/%s/" % self.layerName)
+
 
     def get_layer_config(self):
         providerDict = {}

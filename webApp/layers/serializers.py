@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from layers.models import Layer
-from layers.config import get_config
+from layers import tasks
 
 import logging
 
@@ -25,7 +25,8 @@ class LayerAdminSerializer(serializers.HyperlinkedModelSerializer):
             except Exception, e:
                 logging.error("Error getting metadata from upload " + str(e))
         #regenerate config
-        get_config(force=True)
+        #get_config(force=True)
+        tasks.generate_config.delay()
         return instance
 
 

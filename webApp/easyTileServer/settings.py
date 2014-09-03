@@ -1,6 +1,7 @@
 # Django settings for easyTileServer project.
 
 import os
+import djcelery
 
 BASE_URL = "http://localhost"
 
@@ -33,6 +34,10 @@ CACHES = {
         'LOCATION': '/tmp/django_cache'
     }
 }
+
+#celery
+djcelery.setup_loader()
+BROKER_URL = "amqp://guest:guest@localhost:5672//"
 
 TILESTACHE_CONFIG_PATH = "/tmp/config.json"
 
@@ -95,6 +100,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django.contrib.admin',
     'south',
+    'djcelery',
     'gunicorn',
     'rest_framework',
     'layers',
