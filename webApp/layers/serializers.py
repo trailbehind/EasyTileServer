@@ -33,6 +33,8 @@ class LayerAdminSerializer(serializers.HyperlinkedModelSerializer):
 class TileJsonSerializer(serializers.ModelSerializer):
     tiles = serializers.Field(source="get_tile_url_array")
     uniqueTileCacheKey = serializers.Field(source="layerName")
+    bounds = serializers.Field(source="get_bounds_array")
+    center = serializers.Field(source="get_center_array")
 
     class Meta:
         model = Layer

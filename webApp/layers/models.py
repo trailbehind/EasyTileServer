@@ -186,3 +186,12 @@ class Layer(models.Model):
             config['allowed origin'] = self.allowed_origin
         
         return config
+
+
+    def get_bounds_array(self):
+        coords = self.bounds.boundary.coords
+        return (coords[0][0], coords[0][1], coords[2][0], coords[2][1])
+
+
+    def get_center_array(self):
+        return (self.center.x, self.center.y)
