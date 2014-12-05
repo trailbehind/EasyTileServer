@@ -193,9 +193,10 @@ class Layer(models.Model):
 
 
     def get_bounds_array(self):
-        coords = self.bounds.boundary.coords
-        return (coords[0][0], coords[0][1], coords[2][0], coords[2][1])
-
+        if self.bounds is not None:
+            coords = self.bounds.boundary.coords
+            return (coords[0][0], coords[0][1], coords[2][0], coords[2][1])
+        return None
 
     def get_center_array(self):
         return (self.center.x, self.center.y)
