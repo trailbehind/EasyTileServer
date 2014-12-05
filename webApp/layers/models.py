@@ -199,4 +199,7 @@ class Layer(models.Model):
         return None
 
     def get_center_array(self):
-        return (self.center.x, self.center.y)
+        if self.center is not None:
+            return (self.center.x, self.center.y)
+        return None
+        

@@ -37,3 +37,9 @@ class TileJsonSerializer(serializers.ModelSerializer):
         model = Layer
         fields = ('attribution', 'bounds', 'center', 'description', 'legend', 'maxzoom', 
             'minzoom', 'name', 'version', 'uniqueTileCacheKey', 'tiles', )
+
+    @property
+    def data(self):
+        super(TileJsonSerializer, self).data
+        self._data['tilejson'] = "2.1.0"
+        return self._data
